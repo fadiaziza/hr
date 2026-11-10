@@ -2,172 +2,131 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>بوابة المشرفين – التقييم</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بوابة التقييم – دواجن فلسطين</title>
 <style>
-:root{box-sizing:border-box;--bg:#f3f8f1;--card:#fff;--tx:#1b2330;--mut:#5a6677;--pri:#0f7a3a;--pri2:#e2f4e6;--bd:#d3e2d3;--bad:#c0392b;--navy:#20207f}
-body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7;font-size:14pt}
-header{padding:18px 16px;display:flex;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#17175f,#20207f 50%,#0f7a3a);border-bottom:4px solid #00b030;color:#fff}
-header h1{margin:0;font-size:1.45rem}
-nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;background:var(--bg);position:sticky;top:0;z-index:5}
-nav button{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 14px;border-radius:20px;font:inherit;font-size:.9rem;cursor:pointer}
-nav button.on{background:var(--navy);color:#fff}
-main{max-width:860px;margin:0 auto;padding:8px 14px 40px}
-.card{background:var(--card);border:1px solid var(--bd);border-top:3px solid var(--pri);border-radius:12px;padding:16px;margin:12px 0}
-.crit{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--bd)}
+:root{--bg:#f3f8f1;--card:#fff;--tx:#1b2330;--mut:#5a6677;--pri:#0f7a3a;--bd:#d3e2d3;--navy:#20207f;--bad:#c0392b}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,sans-serif;line-height:1.7;font-size:14pt}
+header{padding:16px;background:linear-gradient(135deg,#17175f,#20207f 50%,#0f7a3a);color:#fff;text-align:center}
+main{max-width:800px;margin:15px auto;padding:0 12px 40px}
+.card{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--pri);border-radius:12px;padding:16px;margin-bottom:14px}
 label{display:block;margin:10px 0 4px;font-size:.95rem;color:var(--mut)}
-input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit;box-sizing:border-box}
-.btn{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:10px 20px;font:inherit;cursor:pointer;margin-top:12px;width:100%}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);font:inherit;box-sizing:border-box}
+.crit{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--bd)}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:12px;font:inherit;cursor:pointer;width:100%;font-weight:bold;margin-top:15px}
 .ok{color:var(--pri);font-weight:bold}
-.bad{color:var(--bad);font-weight:bold}
-.tile{border:1px solid var(--bd);background:var(--card);border-right:4px solid var(--pri);border-radius:12px;padding:14px;margin:8px 0;cursor:pointer;width:100%;text-align:right}
+.nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px}
+.nav button{padding:8px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--card);cursor:pointer;font:inherit}
+.nav button.on{background:var(--navy);color:#fff}
 </style>
 </head>
 <body>
 <header>
-  <div>
-    <h1>بوابة المسؤولين – نظام التميز الوظيفي</h1>
-    <p style="margin:2px 0 0;font-size:.9rem;opacity:.9">شركة دواجن فلسطين – عزيزا</p>
-  </div>
+  <h2 style="margin:0">نظام التميز الوظيفي – شركة دواجن فلسطين</h2>
+  <p style="margin:4px 0 0;font-size:.9rem;opacity:.9">بوابة تقييم المشرفين المباشرة</p>
 </header>
-<div id="authBox" style="max-width:400px;margin:30px auto;padding:0 14px">
-  <div class="card">
-    <h3 style="margin-top:0;color:var(--navy)">تسجيل دخول المشرف</h3>
-    <label>اسم المشرف / المعرّف</label>
-    <input id="u_name" placeholder="مثال: م. فادي محمود">
-    <label>القسم / الدائرة</label>
-    <input id="u_dep" placeholder="مثال: دائرة الصيانة">
-    <button class="btn" onclick="login()">دخول إلى البوابة</button>
-  </div>
-</div>
-
-<div id="appBox" style="display:none">
-  <div style="background:var(--card);padding:8px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
-    <span>مرحباً <b id="dspUser"></b> (<span id="dspDep"></span>)</span>
-    <button onclick="logout()" style="border:1px solid var(--bd);background:transparent;padding:4px 10px;border-radius:6px;cursor:pointer">خروج</button>
-  </div>
-  <nav id="navBar"></nav>
-  <main id="mainContent"></main>
-</div>
-
+<main>
+  <div class="nav" id="navAwards"></div>
+  <div id="content"></div>
+</main>
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztKiqIpRDagjM8Sj3Q-a3EjMa-ELuDsHOUcsasAG6x-0-6dfAuLq8dHmF7MuTcv5g0/exec";
+
 const AW=[
- {id:"month",name:"موظف الشهر",freq:"شهري"},
- {id:"dept",name:"نجم الدوائر",freq:"نصف سنوي"},
- {id:"ops",name:"نجوم العمليات",freq:"ربع سنوي"},
- {id:"trk",name:"نجوم سيارات نقل الريش",freq:"شهري",conv:73},
- {id:"disc",name:"الموظف المنضبط",freq:"كل 3 شهور"}
+ {id:"month",name:"موظف الشهر"},
+ {id:"dept",name:"نجم الدوائر"},
+ {id:"ops",name:"نجوم العمليات"},
+ {id:"trk",name:"نجوم نقل الريش",conv:73},
+ {id:"disc",name:"الموظف المنضبط"}
 ];
+const CR=["الالتزام بأوقات الدوام","مستوى التغيب والمغادرات","الالتزام بأنظمة العمل","المحافظة على الممتلكات","الإلمام بالوصف الوظيفي","تنظيم العمل وسهولة المتابعة","اللباقة وحسن التعامل","وضوح التعبير عن الأفكار","العمل والإنجاز ضمن الفريق","تحمل المسؤولية في المواعيد","تطبيق أساليب جديدة بفعالية","اتخاذ القرار في غياب التعليمات","الاستعداد لتعليم الآخرين","التأكد دائماً من جودة العمل","مهارات التواصل","أفكار جديدة ترفع العمل","الاستفادة من الملاحظات للتحسين"];
 
-const CR=["مدى التزام الموظف بأوقات الدوام","مستوى التغيب والمغادرات","التزام الموظف بأنظمة العمل","المحافظة على الممتلكات العامة","الإلمام بالوصف الوظيفي","تنظيم العمل وسهولة المتابعة","اللباقة وحسن التعامل","وضوح التعبير عن الأفكار","العمل والإنجاز ضمن الفريق","تحمل المسؤولية في المواعيد","تطبيق أساليب جديدة بفعالية","اتخاذ القرار في غياب التعليمات","الاستعداد لتعليم الآخرين","التأكد دائماً من جودة العمل","مهارات الاستماع والتواصل","تقديم أفكار جديدة ترفع العمل","الاستفادة من الملاحظات للتحسين"];
+let activeAw = AW[0];
 
-let supervisor = JSON.parse(localStorage.getItem("active_supervisor") || "null");
-
-function login(){
-  const n = document.getElementById("u_name").value.trim();
-  const d = document.getElementById("u_dep").value.trim();
-  if(!n || !d){ alert("الرجاء إدخال الاسم والقسم"); return; }
-  supervisor = { name: n, dep: d };
-  localStorage.setItem("active_supervisor", JSON.stringify(supervisor));
-  startApp();
+function buildNav(){
+  document.getElementById("navAwards").innerHTML = AW.map(a=>`<button class="${a.id===activeAw.id?'on':''}" onclick="setAw('${a.id}')">${a.name}</button>`).join("");
 }
 
-function logout(){
-  localStorage.removeItem("active_supervisor");
-  location.reload();
+function setAw(id){
+  activeAw = AW.find(x=>x.id===id);
+  buildNav();
+  renderForm();
 }
 
-function startApp(){
-  document.getElementById("authBox").style.display="none";
-  document.getElementById("appBox").style.display="block";
-  document.getElementById("dspUser").textContent = supervisor.name;
-  document.getElementById("dspDep").textContent = supervisor.dep;
-  buildNav("month");
-}
-
-function buildNav(cur){
-  const nav = document.getElementById("navBar");
-  nav.innerHTML = AW.map(a=>`<button class="${a.id===cur?'on':''}" onclick="renderAward('${a.id}')">${a.name}</button>`).join("") +
-  `<button class="${cur==='list'?'on':''}" onclick="renderList()">تقييماتي السابقة</button>`;
-  if(cur!=='list') renderAward(cur);
-}
-
-function renderAward(id){
-  const a = AW.find(x=>x.id===id);
+function renderForm(){
   const now = new Date();
-  const per = (now.getMonth()+1).toString().padStart(2,"0") + "/" + now.getFullYear();
+  const per = String(now.getMonth()+1).padStart(2,"0") + "/" + now.getFullYear();
   let h = `<div class="card">
-    <h2 style="margin:0;color:var(--pri)">${a.name} (${a.freq})</h2>
-    <label>اسم الموظف المرشح</label><input id="emp_name">
-    <label>الفترة</label><input id="emp_per" value="${per}" readonly>
-    <label>القسم</label><input id="emp_dep" value="${supervisor.dep}">
-    ${a.conv ? `<label>نسبة التحويل الكلية (%)</label><input type="number" id="emp_conv" placeholder="الحد الأدنى 73%">`:''}
-    <h3 style="margin-top:16px;color:var(--navy)">بنود التقييم (من 1 إلى 5)</h3>`;
-  
+    <h3 style="margin-top:0;color:var(--navy)">نموذج تقييم: ${activeAw.name}</h3>
+    <label>اسم المشرف المقيّم</label><input id="f_sup" placeholder="اسمك">
+    <label>الدائرة / القسم</label><input id="f_dep" placeholder="القسم">
+    <label>اسم الموظف المرشح</label><input id="f_emp" placeholder="اسم الموظف">
+    <label>فترة التقييم</label><input id="f_per" value="${per}" readonly>
+    ${activeAw.conv ? `<label>نسبة التحويل الكلية (%)</label><input type="number" id="f_conv" placeholder="الحد الأدنى 73%">`:''}
+    <h4 style="margin:16px 0 6px;color:var(--pri)">تقييم المعايير (من 1 إلى 5)</h4>`;
   CR.forEach((c,i)=>{
     h += `<div class="crit"><div style="flex:1">${i+1}. ${c}</div>
-    <select id="s_${i}" style="width:80px" onchange="calcTotal()">
-      <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
-    </select></div>`;
+      <select id="s_${i}" style="width:75px" onchange="calcTotal()">
+        <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+      </select></div>`;
   });
-
-  h += `<div style="font-size:1.2rem;margin-top:12px">المجموع من 85: <b id="tot85" class="ok">85</b></div>
-  <label>ملاحظات</label><textarea id="emp_notes" rows="2"></textarea>
-  <button class="btn" onclick="saveEvaluation('${a.id}','${a.name}')">حفظ وإرسال التقييم</button>
-  <div id="saveMsg"></div></div>`;
-  document.getElementById("mainContent").innerHTML = h;
+  h += `<div style="font-size:1.2rem;margin-top:14px">المجموع الكلي: <b id="t85" class="ok">85</b> من 85</div>
+    <label>ملاحظات</label><textarea id="f_note" rows="2"></textarea>
+    <button class="btn" id="btnSave" onclick="sendEval()">إرسال التقييم للشيت مباشرة</button>
+    <div id="msg"></div></div>`;
+  document.getElementById("content").innerHTML = h;
   calcTotal();
 }
 
 function calcTotal(){
   let s = 0;
-  CR.forEach((c,i)=>{ s += +(document.getElementById("s_"+i).value || 0); });
-  document.getElementById("tot85").textContent = s;
+  CR.forEach((c,i)=>{ s += +(document.getElementById("s_"+i).value||0); });
+  document.getElementById("t85").textContent = s;
 }
 
-function saveEvaluation(aid, aname){
-  const name = document.getElementById("emp_name").value.trim();
-  if(!name){ alert("الرجاء كتابة اسم الموظف"); return; }
-  let s = 0; const scores = [];
-  CR.forEach((c,i)=>{ const v = +document.getElementById("s_"+i).value; scores.push(v); s += v; });
-  const item = {
-    id: "eval_" + Date.now(),
-    awardId: aid, awardName: aname,
-    empName: name, dep: document.getElementById("emp_dep").value,
-    period: document.getElementById("emp_per").value,
-    supervisor: supervisor.name,
-    s85: s, scores: scores,
-    conv: document.getElementById("emp_conv") ? document.getElementById("emp_conv").value : null,
-    notes: document.getElementById("emp_notes").value,
-    date: new Date().toLocaleDateString("ar")
-  };
-  const list = JSON.parse(localStorage.getItem("aziza_evals") || "[]");
-  list.unshift(item);
-  localStorage.setItem("aziza_evals", JSON.stringify(list));
+async function sendEval(){
+  const sup = document.getElementById("f_sup").value.trim();
+  const dep = document.getElementById("f_dep").value.trim();
+  const emp = document.getElementById("f_emp").value.trim();
+  const msg = document.getElementById("msg");
+  if(!sup || !dep || !emp){ alert("يرجى ملء جميع الحقول المطلوبة"); return; }
   
-  // توليد نص للمشاركة السريعة عبر واتساب للإدارة مباشرة
-  const waText = encodeURIComponent(`*تقييم تميز وظيفي - عزيزا*%0Aالمشرف: ${supervisor.name}%0Aالموظف: ${name}%0Aالجائزة: ${aname}%0Aالنتيجة: ${s}/85%0Aالفترة: ${item.period}`);
-  document.getElementById("saveMsg").innerHTML = `<p class="ok">✔ تم حفظ التقييم محلياً بنجاح!</p>
-  <a href="https://wa.me/?text=${waText}" target="_blank" class="btn" style="background:#25D366;text-decoration:none;display:block;text-align:center">إرسال النتيجة للإدارة عبر WhatsApp</a>`;
-}
+  let s = 0;
+  CR.forEach((c,i)=>{ s += +(document.getElementById("s_"+i).value||0); });
 
-function renderList(){
-  const list = JSON.parse(localStorage.getItem("aziza_evals") || "[]");
-  let h = `<div class="card"><h2 style="color:var(--navy)">التقييمات المسجلة على هذا الجهاز</h2>`;
-  if(!list.length) h += `<p>لا توجد تقييمات محفوظة بعد.</p>`;
-  else{
-    list.forEach(r=>{
-      h += `<div class="crit" style="justify-content:space-between">
-        <div><b>${r.empName}</b> (${r.awardName})<br><span style="font-size:.85rem;color:var(--mut)">${r.period} · ${r.dep}</span></div>
-        <div style="font-size:1.1rem" class="ok">${r.s85} / 85</div>
-      </div>`;
+  const payload = {
+    supervisor: sup,
+    dep: dep,
+    emp: emp,
+    award: activeAw.name,
+    period: document.getElementById("f_per").value,
+    score: s,
+    conv: document.getElementById("f_conv") ? document.getElementById("f_conv").value : "-",
+    notes: document.getElementById("f_note").value
+  };
+
+  const btn = document.getElementById("btnSave");
+  btn.disabled = true;
+  btn.textContent = "جارٍ الحفظ في Google Sheets...";
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
+    msg.innerHTML = '<p class="ok">✔ تم حفظ التقييم بنجاح في ملف Google Sheet!</p>';
+    btn.textContent = "تم الإرسال";
+    setTimeout(()=>{ renderForm(); }, 2000);
+  } catch(e) {
+    msg.innerHTML = '<p style="color:var(--bad)">حدث خطأ أثناء الإرسال، تأكد من الاتصال بالإنترنت.</p>';
+    btn.disabled = false;
+    btn.textContent = "إعادة المحاولة";
   }
-  h += `</div>`;
-  document.getElementById("mainContent").innerHTML = h;
 }
 
-if(supervisor) startApp();
+buildNav();
+renderForm();
 </script>
 </body>
 </html>
