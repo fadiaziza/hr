@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>بوابة التقييم – دواجن فلسطين</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>بوابة المشرفين – نظام التميز الوظيفي</title>
 <style>
 :root{--bg:#f3f8f1;--card:#fff;--tx:#1b2330;--mut:#5a6677;--pri:#0f7a3a;--bd:#d3e2d3;--navy:#20207f;--bad:#c0392b}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,sans-serif;line-height:1.7;font-size:14pt}
@@ -16,39 +16,239 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-
 .btn{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:12px;font:inherit;cursor:pointer;width:100%;font-weight:bold;margin-top:15px}
 .ok{color:var(--pri);font-weight:bold}
 .nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px}
-.nav button{padding:8px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--card);cursor:pointer;font:inherit}
+.nav button{padding:8px 14px;border-radius:20px;border:1px solid var(--bd);background:var(--card);cursor:pointer;font:inherit;white-space:nowrap}
 .nav button.on{background:var(--navy);color:#fff}
+.bar{background:var(--card);padding:10px 14px;border-radius:8px;border:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 </style>
 </head>
 <body>
 <header>
   <h2 style="margin:0">نظام التميز الوظيفي – شركة دواجن فلسطين</h2>
-  <p style="margin:4px 0 0;font-size:.9rem;opacity:.9">بوابة تقييم المشرفين المباشرة</p>
+  <p style="margin:4px 0 0;font-size:.9rem;opacity:.9">بوابة تقييم المشرفين المعتمدة</p>
 </header>
+
 <main>
-  <div class="nav" id="navAwards"></div>
-  <div id="content"></div>
+  <!-- شاشة الدخول -->
+  <div id="loginBox" class="card" style="max-width:420px;margin:40px auto">
+    <h3 style="margin-top:0;color:var(--navy);text-align:center">تسجيل دخول المشرف</h3>
+    <label>اسم المستخدم (Username)</label>
+    <input id="u_user" placeholder="مثال: Fadi.Mahmood">
+    <label>كلمة المرور</label>
+    <input id="u_pass" type="password" placeholder="كلمة المرور">
+    <p style="font-size:.85rem;color:var(--mut);margin:6px 0 0">كلمة المرور الافتراضية الأولى: <b>Aziza@123</b></p>
+    <button class="btn" onclick="login()">دخول إلى البوابة</button>
+    <div id="loginErr" style="color:var(--bad);margin-top:10px;text-align:center"></div>
+  </div>
+
+  <!-- الشاشة الرئيسية بعد الدخول -->
+  <div id="appBox" style="display:none">
+    <div class="bar">
+      <div>المشرف: <b id="supName" style="color:var(--navy)"></b> | <span id="supDep"></span></div>
+      <div>
+        <button onclick="changePassPrompt()" style="border:1px solid var(--bd);background:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font:inherit;margin-left:6px">تغيير السر</button>
+        <button onclick="logout()" style="border:1px solid var(--bad);background:#fff;color:var(--bad);padding:4px 10px;border-radius:6px;cursor:pointer;font:inherit">خروج</button>
+      </div>
+    </div>
+    <div class="nav" id="navAwards"></div>
+    <div id="content"></div>
+  </div>
 </main>
+
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGf-a1_yiFdf5xeNEYQw06Sv0FZPll2t6HawAap23zeS31-rG9emJzb3nHm6NU_rI/exec";
 
-const AW=[
+const USERS = [
+ {
+  "username": "Fadi.Mahmood",
+  "name": "م. فادي محمود",
+  "dep": "الصيانة العامة",
+  "emp": [
+   "سامي رفيق علي سليم",
+   "حافظ رفعت ابراهيم نور",
+   "منتصر عقل محمد نجيب زقدح",
+   "مجاهد محمود صالح محمود"
+  ],
+  "except": ["trk"]
+ },
+ {
+  "username": "Rani.Ghadban",
+  "name": "راني غضبان",
+  "dep": "العمليات والإنتاج",
+  "emp": [
+   "مجدي غازي أحمد ثلثين",
+   "أشرف واصف حسن عبد الفتاح",
+   "ربيع رافع ذياب كعكوره",
+   "احمد فرحان حج احمد",
+   "يوسف خليل يوسف ابو طاحون",
+   "عبد الجبار شوقي عبد الجبار سالم",
+   "امجد ماجد احمد الرقطي",
+   "ياسر جمال كامل شهاب",
+   "زيد محمود محمد الطقاطقة",
+   "احمد مازن محمود شومرية",
+   "اشرف بشار خالد اسماعيل",
+   "خالد ماهر زكي جلاد",
+   "إبراهيم طاهر صادق مسعود",
+   "علاء حسن محمد أبو خاطر",
+   "مالك شوقي عبد الجبار سالم",
+   "نور الدين مأمون حلمي سالم",
+   "فادي تيسير نايف شافعي",
+   "وسام عثمان عبد الله شربجي",
+   "تميم اشرف عبد الجبار سالم",
+   "عبد الفتاح احمد محمود فقها",
+   "جابر شوقي عبد الجبار سالم",
+   "عبد الجبار عبد الله يوسف عوده",
+   "محمود جهاد محمود أبو غالي",
+   "عدي سرحان احمد سالم",
+   "محمد عبد الله يوسف عوده",
+   "عمر عمار يوسف عوده",
+   "عطاء محمد عوض حسين",
+   "عمر محمد عوض حسين",
+   "عبد الكريم محمد رضا عبد الكريم فقهاء",
+   "انس برهان محمود حسين"
+  ],
+  "except": ["trk"]
+ },
+ {
+  "username": "Yousef.Foqaha",
+  "name": "يوسف فقهاء",
+  "dep": "الإنتاج والتجهيز",
+  "emp": [
+   "يوسف خليل يوسف صالح",
+   "أنور ايمن مصلح حاج يوسف",
+   "جمال احمد محمود الناجي",
+   "علي عبد الرحيم عفيف حجاز",
+   "عميد عدنان عبد الفتاح ثلثين",
+   "محمد حفظي طاهر حسن",
+   "قاسم عماد علي ابو عبيد",
+   "محمود صبري بسام محمود",
+   "جعفر عبد الحكيم محمد سعيد ابو صفيه",
+   "عباس عصام عباس يوسف",
+   "عمر عاهد محمود صبح",
+   "علي عوض نمر السعايده",
+   "ليث محمد عبد الحميد شلبي",
+   "محمد نافع ذياب كعكور",
+   "حسين محمود حسن ابو الكم",
+   "احمد جمال حسين عمير",
+   "مروان حماد عبد القادر حمد",
+   "احمد عمر ابراهيم نصار",
+   "قصي محسن محمود شحرور",
+   "إبراهيم محمد موعد دعمه",
+   "عاصم محمود عبد اللطيف شحرور",
+   "محمود عاطف محمود عطا",
+   "مهدي علي احمد همشري",
+   "رازي راتب محمود جابر"
+  ],
+  "except": ["trk"]
+ },
+ {
+  "username": "Ahmad.Hattab",
+  "name": "أحمد حطاب",
+  "dep": "نقل الدجاج الحي",
+  "emp": [
+   "زاهر احمد اسماعيل حمد",
+   "محمد سعيد محمد فقها",
+   "فادي سليمان احمد غانم",
+   "جمال خضر مصلح شايب",
+   "محمد احمد حسن نور",
+   "يامن احمد اسماعيل حمد",
+   "معاذ محمود محمد جباره",
+   "عمرو احمد محمد حمد",
+   "احمد ماجد محمود فقها"
+  ],
+  "only": ["trk"]
+ },
+ {
+  "username": "Mohanad.Alhaj",
+  "name": "مهند الحاج",
+  "dep": "الخدمات والمرافق",
+  "emp": [
+   "مصطفى فيصل خليل احمد",
+   "عبد الكريم ماجد علي بركات",
+   "وجيه وصفي وجيه صباح",
+   "محمود حسين محمود المهدي",
+   "حازم حاتم حافظ قبج"
+  ],
+  "except": ["trk"]
+ }
+];
+
+const ALL_AW = [
  {id:"month",name:"موظف الشهر"},
  {id:"dept",name:"نجم الدوائر"},
  {id:"ops",name:"نجوم العمليات"},
  {id:"trk",name:"نجوم نقل الريش",conv:73},
  {id:"disc",name:"الموظف المنضبط"}
 ];
-const CR=["الالتزام بأوقات الدوام","مستوى التغيب والمغادرات","الالتزام بأنظمة العمل","المحافظة على الممتلكات","الإلمام بالوصف الوظيفي","تنظيم العمل وسهولة المتابعة","اللباقة وحسن التعامل","وضوح التعبير عن الأفكار","العمل والإنجاز ضمن الفريق","تحمل المسؤولية في المواعيد","تطبيق أساليب جديدة بفعالية","اتخاذ القرار في غياب التعليمات","الاستعداد لتعليم الآخرين","التأكد دائماً من جودة العمل","مهارات التواصل","أفكار جديدة ترفع العمل","الاستفادة من الملاحظات للتحسين"];
 
-let activeAw = AW[0];
+const CR = ["الالتزام بأوقات الدوام","مستوى التغيب والمغادرات","الالتزام بأنظمة العمل","المحافظة على الممتلكات العامة","الإلمام بالوصف الوظيفي","تنظيم العمل وسهولة المتابعة","اللباقة وحسن التعامل","وضوح التعبير عن الأفكار","العمل والإنجاز ضمن الفريق","تحمل المسؤولية في المواعيد","تطبيق أساليب جديدة بفعالية","اتخاذ القرار في غياب التعليمات","الاستعداد لتعليم الآخرين","التأكد دائماً من جودة العمل","مهارات التواصل","تقديم أفكار جديدة","الاستفادة من الملاحظات للتحسين"];
+
+let currentUser = null;
+let activeAwards = [];
+let activeAw = null;
+
+function getSavedPass(uname){
+  const p = localStorage.getItem("pwd_" + uname.toLowerCase());
+  return p || "Aziza@123";
+}
+
+function login(){
+  const u = document.getElementById("u_user").value.trim();
+  const p = document.getElementById("u_pass").value;
+  const user = USERS.find(x => x.username.toLowerCase() === u.toLowerCase());
+  if(!user){
+    document.getElementById("loginErr").textContent = "اسم المستخدم غير مسجل";
+    return;
+  }
+  if(p !== getSavedPass(user.username)){
+    document.getElementById("loginErr").textContent = "كلمة المرور غير صحيحة";
+    return;
+  }
+  currentUser = user;
+  sessionStorage.setItem("cur_user", JSON.stringify(currentUser));
+  startPortal();
+}
+
+function logout(){
+  sessionStorage.removeItem("cur_user");
+  location.reload();
+}
+
+function changePassPrompt(){
+  const np = prompt("أدخل كلمة المرور الجديدة الخاصة بك:");
+  if(np && np.trim().length >= 4){
+    localStorage.setItem("pwd_" + currentUser.username.toLowerCase(), np.trim());
+    alert("تم تحديث كلمة المرور بنجاح على هذا الجهاز.");
+  } else if(np !== null) {
+    alert("يجب أن تتكون كلمة المرور من 4 خانات على الأقل.");
+  }
+}
+
+function startPortal(){
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("appBox").style.display = "block";
+  document.getElementById("supName").textContent = currentUser.name;
+  document.getElementById("supDep").textContent = currentUser.dep;
+
+  // تحديد الجوائز المتاحة للمشرف
+  activeAwards = ALL_AW.filter(a => {
+    if(currentUser.only && !currentUser.only.includes(a.id)) return false;
+    if(currentUser.except && currentUser.except.includes(a.id)) return false;
+    return true;
+  });
+
+  activeAw = activeAwards[0];
+  buildNav();
+  renderForm();
+}
 
 function buildNav(){
-  document.getElementById("navAwards").innerHTML = AW.map(a=>`<button class="${a.id===activeAw.id?'on':''}" onclick="setAw('${a.id}')">${a.name}</button>`).join("");
+  document.getElementById("navAwards").innerHTML = activeAwards.map(a =>
+    `<button class="${a.id === activeAw.id ? 'on' : ''}" onclick="setAw('${a.id}')">${a.name}</button>`
+  ).join("");
 }
 
 function setAw(id){
-  activeAw = AW.find(x=>x.id===id);
+  activeAw = activeAwards.find(x => x.id === id);
   buildNav();
   renderForm();
 }
@@ -56,51 +256,61 @@ function setAw(id){
 function renderForm(){
   const now = new Date();
   const per = String(now.getMonth()+1).padStart(2,"0") + "/" + now.getFullYear();
+  
+  // بناء قائمة موظفي هذا المشرف فقط
+  const empOptions = currentUser.emp.map(e => `<option value="${e}">${e}</option>`).join("");
+
   let h = `<div class="card">
     <h3 style="margin-top:0;color:var(--navy)">نموذج تقييم: ${activeAw.name}</h3>
-    <label>اسم المشرف المقيّم</label><input id="f_sup" placeholder="اكتب اسمك">
-    <label>الدائرة / القسم</label><input id="f_dep" placeholder="القسم">
-    <label>اسم الموظف المرشح</label><input id="f_emp" placeholder="اسم الموظف">
-    <label>فترة التقييم</label><input id="f_per" value="${per}" readonly>
-    ${activeAw.conv ? `<label>نسبة التحويل الكلية (%)</label><input type="number" id="f_conv" placeholder="الحد الأدنى 73%">`:''}
-    <h4 style="margin:16px 0 6px;color:var(--pri)">تقييم المعايير (من 1 إلى 5)</h4>`;
-  CR.forEach((c,i)=>{
-    h += `<div class="crit"><div style="flex:1">${i+1}. ${c}</div>
+    <label>الموظف المرشح (فريقك)</label>
+    <select id="f_emp">
+      <option value="">-- اختر اسم الموظف --</option>
+      ${empOptions}
+    </select>
+    <label>فترة التقييم</label>
+    <input id="f_per" value="${per}" readonly>
+    ${activeAw.conv ? `<label>نسبة التحويل الكلية (%)</label><input type="number" id="f_conv" placeholder="الحد الأدنى 73%">` : ''}
+    <h4 style="margin:16px 0 6px;color:var(--pri)">معايير التقييم (من 1 إلى 5)</h4>`;
+
+  CR.forEach((c, i) => {
+    h += `<div class="crit">
+      <div style="flex:1">${i+1}. ${c}</div>
       <select id="s_${i}" style="width:75px" onchange="calcTotal()">
         <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
-      </select></div>`;
+      </select>
+    </div>`;
   });
+
   h += `<div style="font-size:1.2rem;margin-top:14px">المجموع الكلي: <b id="t85" class="ok">85</b> من 85</div>
-    <label>ملاحظات</label><textarea id="f_note" rows="2"></textarea>
+    <label>ملاحظات إضافية</label><textarea id="f_note" rows="2"></textarea>
     <button class="btn" id="btnSave" onclick="sendEval()">إرسال التقييم للشيت مباشرة</button>
     <div id="msg"></div></div>`;
+
   document.getElementById("content").innerHTML = h;
   calcTotal();
 }
 
 function calcTotal(){
   let s = 0;
-  CR.forEach((c,i)=>{ s += +(document.getElementById("s_"+i).value||0); });
+  CR.forEach((c, i) => { s += +(document.getElementById("s_" + i).value || 0); });
   document.getElementById("t85").textContent = s;
 }
 
 function sendEval(){
-  const sup = document.getElementById("f_sup").value.trim();
-  const dep = document.getElementById("f_dep").value.trim();
-  const emp = document.getElementById("f_emp").value.trim();
+  const emp = document.getElementById("f_emp").value;
   const msg = document.getElementById("msg");
-  if(!sup || !dep || !emp){ alert("يرجى ملء جميع الحقول المطلوبة"); return; }
-  
+  if(!emp){ alert("يرجى اختيار اسم الموظف المراد تقييمه"); return; }
+
   let s = 0;
-  CR.forEach((c,i)=>{ s += +(document.getElementById("s_"+i).value||0); });
+  CR.forEach((c, i) => { s += +(document.getElementById("s_" + i).value || 0); });
 
   const btn = document.getElementById("btnSave");
   btn.disabled = true;
   btn.textContent = "جارٍ الحفظ في Google Sheets...";
 
   const params = new URLSearchParams({
-    supervisor: sup,
-    dep: dep,
+    supervisor: currentUser.name,
+    dep: currentUser.dep,
     emp: emp,
     award: activeAw.name,
     period: document.getElementById("f_per").value,
@@ -111,14 +321,18 @@ function sendEval(){
 
   const img = new Image();
   img.src = SCRIPT_URL + "?" + params.toString();
-  
-  msg.innerHTML = '<p class="ok">✔ تم حفظ التقييم بنجاح في ملف Google Sheet!</p>';
+
+  msg.innerHTML = '<p class="ok">✔ تم إرسال تقييم (' + emp + ') بنجاح إلى ملف الإكسل!</p>';
   btn.textContent = "تم الإرسال";
-  setTimeout(()=>{ renderForm(); }, 1500);
+  setTimeout(() => { renderForm(); }, 1600);
 }
 
-buildNav();
-renderForm();
+// استعادة الجلسة في حال تحديث الصفحة
+const sess = sessionStorage.getItem("cur_user");
+if(sess){
+  currentUser = JSON.parse(sess);
+  startPortal();
+}
 </script>
 </body>
 </html>
