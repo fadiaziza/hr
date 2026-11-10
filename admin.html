@@ -3,44 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>لوحة الإدارة والداشبورد – دواجن فلسطين</title>
+<title>لوحة الإدارة والتحليلات – دواجن فلسطين</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{--pri:#0f7a3a;--navy:#20207f;--bg:#f3f8f1;--card:#fff;--bd:#d3e2d3}
 body{font-family:"Segoe UI",Tahoma,sans-serif;background:var(--bg);margin:0;padding:15px;direction:rtl;font-size:14pt}
-header{background:linear-gradient(135deg,#17175f,var(--navy) 50%,var(--pri));color:#fff;padding:16px 20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+header{background:linear-gradient(135deg,#17175f,var(--navy) 50%,var(--pri));color:#fff;padding:16px 20px;border-radius:12px;margin-bottom:15px;display:flex;justify-content:space-between;align-items:center}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
 .kpi{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--pri);border-radius:10px;padding:14px;text-align:center}
-.kpi b{font-size:1.8rem;color:var(--navy);display:block}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:15px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:15px;margin-bottom:15px}
-.btn{background:var(--pri);color:#fff;border:0;padding:8px 16px;border-radius:6px;cursor:pointer;font:inherit}
+.kpi b{font-size:2rem;color:var(--navy);display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:15px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px}
 table{width:100%;border-collapse:collapse;font-size:1rem}
-th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:right}
+th,td{padding:10px;border-bottom:1px solid var(--bd);text-align:right}
+th{background:#e8f2e6;color:var(--navy)}
+.btn-refresh{background:var(--pri);color:#fff;border:0;padding:8px 16px;border-radius:6px;cursor:pointer;font:inherit}
 </style>
 </head>
 <body>
-
 <header>
   <div>
-    <h2 style="margin:0">لوحة الإدارة والتحليلات (Dashboard)</h2>
+    <h2 style="margin:0">لوحة الإدارة والتحليلات (مرتبطة بـ Google Sheets)</h2>
     <p style="margin:4px 0 0;font-size:.9rem;opacity:.9">نظام التميز الوظيفي – شركة دواجن فلسطين (عزيزا)</p>
   </div>
-  <div>
-    <button class="btn" style="background:#20207f" onclick="importJSON()">استيراد تقييمات المشرفين</button>
-    <button class="btn" onclick="exportData()">تصدير نسخة احتياطية</button>
-  </div>
+  <button class="btn-refresh" onclick="loadData()">تحديث البيانات 🔄</button>
 </header>
 
 <div class="kpis">
   <div class="kpi"><b id="k_tot">0</b><span>إجمالي التقييمات</span></div>
-  <div class="kpi"><b id="k_avg">0</b><span>متوسط درجات التقييم (من 85)</span></div>
-  <div class="kpi"><b id="k_dep">0</b><span>عدد الدوائر المقيّمة</span></div>
+  <div class="kpi"><b id="k_avg">0</b><span>متوسط الدرجات (من 85)</span></div>
+  <div class="kpi"><b id="k_dep">0</b><span>الأقسام المشاركة</span></div>
 </div>
 
 <div class="grid">
   <div class="card">
-    <h3 style="margin-top:0;color:var(--navy)">متوسط الأداء حسب القسم</h3>
+    <h3 style="margin-top:0;color:var(--navy)">متوسط التقييم حسب القسم</h3>
     <canvas id="cBar"></canvas>
   </div>
   <div class="card">
@@ -50,46 +47,61 @@ th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:right}
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0;color:var(--navy)">سجل التقييمات المعتمدة</h3>
+  <h3 style="margin-top:0;color:var(--navy)">سجل التقييمات القادمة من Google Sheets</h3>
   <div style="overflow-x:auto">
     <table>
       <thead>
-        <tr><th>الموظف</th><th>الجائزة</th><th>القسم</th><th>المشرف</th><th>الفترة</th><th>تقييم المشرف /85</th><th>إضافة تصويت اللجنة (/15)</th></tr>
+        <tr><th>التاريخ</th><th>الموظف</th><th>الجائزة</th><th>القسم</th><th>المشرف</th><th>الفترة</th><th>النتيجة /85</th><th>نسبة التحويل</th></tr>
       </thead>
-      <tbody id="tblBody"></tbody>
+      <tbody id="tblBody">
+        <tr><td colspan="8" style="text-align:center">جارٍ جلب البيانات من الشيت...</td></tr>
+      </tbody>
     </table>
   </div>
 </div>
 
-<input type="file" id="fileIn" style="display:none" onchange="loadFiles(this)">
-
 <script>
-let EVALS = JSON.parse(localStorage.getItem("aziza_evals") || "[]");
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztKiqIpRDagjM8Sj3Q-a3EjMa-ELuDsHOUcsasAG6x-0-6dfAuLq8dHmF7MuTcv5g0/exec";
+
 let barChart = null, pieChart = null;
 
-function render(){
-  document.getElementById("k_tot").textContent = EVALS.length;
-  const avg = EVALS.length ? (EVALS.reduce((s,x)=>s+(+x.s85||0),0)/EVALS.length).toFixed(1) : 0;
+async function loadData(){
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    render(data.reverse()); // الأحدث أولاً
+  } catch (err) {
+    document.getElementById("tblBody").innerHTML = '<tr><td colspan="8" style="text-align:center;color:red">تعذر تحميل البيانات، تأكد من صحة الرابط.</td></tr>';
+  }
+}
+
+function render(list){
+  document.getElementById("k_tot").textContent = list.length;
+  const avg = list.length ? (list.reduce((s,x)=>s+(+x.score||0),0)/list.length).toFixed(1) : "0";
   document.getElementById("k_avg").textContent = avg + " / 85";
-  const depts = [...new Set(EVALS.map(x=>x.dep).filter(Boolean))];
+  const depts = [...new Set(list.map(x=>x.dep).filter(Boolean))];
   document.getElementById("k_dep").textContent = depts.length;
 
-  // ملء الجدول
   const tb = document.getElementById("tblBody");
-  tb.innerHTML = EVALS.map((r,i)=>`<tr>
-    <td><b>${r.empName}</b></td>
-    <td>${r.awardName}</td>
-    <td>${r.dep}</td>
-    <td>${r.supervisor}</td>
-    <td>${r.period}</td>
-    <td style="color:var(--pri);font-weight:bold">${r.s85}</td>
-    <td><input type="number" min="0" max="15" value="${r.comm||0}" style="width:60px" onchange="saveComm(${i},this.value)"> <span style="font-weight:bold;color:var(--navy)">المجموع: ${+r.s85 + (+r.comm||0)}/100</span></td>
-  </tr>`).join("");
+  if(!list.length){
+    tb.innerHTML = '<tr><td colspan="8" style="text-align:center">لا توجد تقييمات مسجلة في الشيت حتى الآن.</td></tr>';
+  } else {
+    tb.innerHTML = list.map(r=>`<tr>
+      <td style="font-size:.85rem;color:#666">${r.date}</td>
+      <td><b>${r.emp}</b></td>
+      <td>${r.award}</td>
+      <td>${r.dep}</td>
+      <td>${r.supervisor}</td>
+      <td>${r.period}</td>
+      <td style="color:var(--pri);font-weight:bold">${r.score}</td>
+      <td>${r.conv}</td>
+    </tr>`).join("");
+  }
 
-  // رسم شريط الأقسام
+  // رسم الأقسام
   const dScores = depts.map(d=>{
-    const l = EVALS.filter(x=>x.dep===d);
-    return (l.reduce((s,x)=>s+x.s85,0)/l.length).toFixed(1);
+    const l = list.filter(x=>x.dep===d);
+    return (l.reduce((s,x)=>s+(+x.score||0),0)/l.length).toFixed(1);
   });
   if(barChart) barChart.destroy();
   barChart = new Chart(document.getElementById("cBar"),{
@@ -98,9 +110,9 @@ function render(){
     options:{scales:{y:{max:85,beginAtZero:true}}}
   });
 
-  // رسم توزيع الجوائز
-  const awards = [...new Set(EVALS.map(x=>x.awardName))];
-  const aCounts = awards.map(a=>EVALS.filter(x=>x.awardName===a).length);
+  // رسم الجوائز
+  const awards = [...new Set(list.map(x=>x.award).filter(Boolean))];
+  const aCounts = awards.map(a=>list.filter(x=>x.award===a).length);
   if(pieChart) pieChart.destroy();
   pieChart = new Chart(document.getElementById("cPie"),{
     type:'pie',
@@ -108,39 +120,7 @@ function render(){
   });
 }
 
-function saveComm(i,val){
-  EVALS[i].comm = +val;
-  localStorage.setItem("aziza_evals", JSON.stringify(EVALS));
-  render();
-}
-
-function exportData(){
-  const blob = new Blob([JSON.stringify(EVALS,null,2)],{type:'application/json'});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "Aziza_Evaluations.json";
-  a.click();
-}
-
-function importJSON(){ document.getElementById("fileIn").click(); }
-
-function loadFiles(inp){
-  const file = inp.files[0];
-  if(!file) return;
-  const r = new FileReader();
-  r.onload = e => {
-    try{
-      const data = JSON.parse(e.target.result);
-      EVALS = data;
-      localStorage.setItem("aziza_evals", JSON.stringify(EVALS));
-      render();
-      alert("تم استيراد البيانات وتحديث اللوحة بنجاح!");
-    }catch(err){ alert("الملف غير صالح"); }
-  };
-  r.readAsText(file);
-}
-
-render();
+loadData();
 </script>
 </body>
 </html>
