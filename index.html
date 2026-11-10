@@ -58,7 +58,7 @@ function renderForm(){
   const per = String(now.getMonth()+1).padStart(2,"0") + "/" + now.getFullYear();
   let h = `<div class="card">
     <h3 style="margin-top:0;color:var(--navy)">نموذج تقييم: ${activeAw.name}</h3>
-    <label>اسم المشرف المقيّم</label><input id="f_sup" placeholder="اسمك">
+    <label>اسم المشرف المقيّم</label><input id="f_sup" placeholder="اكتب اسمك">
     <label>الدائرة / القسم</label><input id="f_dep" placeholder="القسم">
     <label>اسم الموظف المرشح</label><input id="f_emp" placeholder="اسم الموظف">
     <label>فترة التقييم</label><input id="f_per" value="${per}" readonly>
@@ -84,7 +84,7 @@ function calcTotal(){
   document.getElementById("t85").textContent = s;
 }
 
-async function sendEval(){
+function sendEval(){
   const sup = document.getElementById("f_sup").value.trim();
   const dep = document.getElementById("f_dep").value.trim();
   const emp = document.getElementById("f_emp").value.trim();
@@ -94,7 +94,11 @@ async function sendEval(){
   let s = 0;
   CR.forEach((c,i)=>{ s += +(document.getElementById("s_"+i).value||0); });
 
-  const payload = {
+  const btn = document.getElementById("btnSave");
+  btn.disabled = true;
+  btn.textContent = "جارٍ الحفظ في Google Sheets...";
+
+  const params = new URLSearchParams({
     supervisor: sup,
     dep: dep,
     emp: emp,
@@ -103,26 +107,14 @@ async function sendEval(){
     score: s,
     conv: document.getElementById("f_conv") ? document.getElementById("f_conv").value : "-",
     notes: document.getElementById("f_note").value
-  };
+  });
 
-  const btn = document.getElementById("btnSave");
-  btn.disabled = true;
-  btn.textContent = "جارٍ الحفظ في Google Sheets...";
-  try {
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    msg.innerHTML = '<p class="ok">✔ تم حفظ التقييم بنجاح في ملف Google Sheet!</p>';
-    btn.textContent = "تم الإرسال";
-    setTimeout(()=>{ renderForm(); }, 2000);
-  } catch(e) {
-    msg.innerHTML = '<p style="color:var(--bad)">حدث خطأ أثناء الإرسال، تأكد من الاتصال بالإنترنت.</p>';
-    btn.disabled = false;
-    btn.textContent = "إعادة المحاولة";
-  }
+  const img = new Image();
+  img.src = SCRIPT_URL + "?" + params.toString();
+  
+  msg.innerHTML = '<p class="ok">✔ تم حفظ التقييم بنجاح في ملف Google Sheet!</p>';
+  btn.textContent = "تم الإرسال";
+  setTimeout(()=>{ renderForm(); }, 1500);
 }
 
 buildNav();
