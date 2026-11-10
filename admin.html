@@ -61,7 +61,7 @@ th{background:#e8f2e6;color:var(--navy)}
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztKiqIpRDagjM8Sj3Q-a3EjMa-ELuDsHOUcsasAG6x-0-6dfAuLq8dHmF7MuTcv5g0/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGf-a1_yiFdf5xeNEYQw06Sv0FZPll2t6HawAap23zeS31-rG9emJzb3nHm6NU_rI/exec";
 
 let barChart = null, pieChart = null;
 
@@ -69,7 +69,7 @@ async function loadData(){
   try {
     const res = await fetch(SCRIPT_URL);
     const data = await res.json();
-    render(data.reverse()); // الأحدث أولاً
+    render(data.reverse());
   } catch (err) {
     document.getElementById("tblBody").innerHTML = '<tr><td colspan="8" style="text-align:center;color:red">تعذر تحميل البيانات، تأكد من صحة الرابط.</td></tr>';
   }
@@ -98,10 +98,9 @@ function render(list){
     </tr>`).join("");
   }
 
-  // رسم الأقسام
   const dScores = depts.map(d=>{
     const l = list.filter(x=>x.dep===d);
-    return (l.reduce((s,x)=>s+(+x.score||0),0)/l.length).toFixed(1);
+    return (l.reduce((s,x)=>s+x.score,0)/l.length).toFixed(1);
   });
   if(barChart) barChart.destroy();
   barChart = new Chart(document.getElementById("cBar"),{
@@ -110,7 +109,6 @@ function render(list){
     options:{scales:{y:{max:85,beginAtZero:true}}}
   });
 
-  // رسم الجوائز
   const awards = [...new Set(list.map(x=>x.award).filter(Boolean))];
   const aCounts = awards.map(a=>list.filter(x=>x.award===a).length);
   if(pieChart) pieChart.destroy();
