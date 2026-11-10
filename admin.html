@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نظام التميز الوظيفي – دواجن فلسطين</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f1;--card:#fff;--tx:#1b2330;--mut:#5a6677;--pri:#0f7a3a;--pri2:#e2f4e6;--bd:#d3e2d3;--ok:#0f7a3a;--bad:#c0392b;--gold:#e0a800;--navy:#20207f;--yel:#f4c20d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a14;--card:#18251d;--tx:#eaf2ec;--mut:#9db3a4;--pri:#3fd072;--pri2:#1d3a29;--bd:#2c4234;--ok:#5fdc8a;--bad:#ff8d80;--gold:#f4c20d;--navy:#9ea0ff;--yel:#f4c20d}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+header{padding:18px 16px 16px;display:flex;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#17175f,#20207f 50%,#0f7a3a);border-bottom:4px solid #00b030}
+header img{width:72px;height:72px;border-radius:50%;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+h1{margin:0;font-size:1.45rem;color:#fff}
+header p{margin:2px 0 0;color:#e8f6ec;font-size:.92rem}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 14px;border-radius:20px;font:inherit;font-size:.9rem;cursor:pointer}
+nav button.on{background:#20207f;color:#fff;border-color:#20207f}
+main{max-width:860px;margin:0 auto;padding:8px 14px 40px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin:12px 0}
+.card{border-top:3px solid var(--pri)}
+.card h2,.card h3{margin:0 0 8px;color:var(--pri)}
+.tag{display:inline-block;background:var(--pri2);color:var(--pri);border-radius:12px;padding:2px 10px;font-size:.85rem;margin-left:6px}
+ul{margin:6px 0;padding-right:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.tile{cursor:pointer;border:1px solid var(--bd);background:var(--card);border-radius:12px;padding:14px;text-align:right;font:inherit;color:var(--tx)}
+.tile:hover{border-color:var(--pri)}
+.tile{border-right:4px solid var(--pri)}
+.tile b{display:block;color:var(--navy)}
+.tile span{color:var(--mut);font-size:.85rem}
+label{display:block;margin:10px 0 4px;font-size:.9rem;color:var(--mut)}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+.crit{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--bd)}
+.crit input{width:auto;margin-top:6px}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:10px 20px;font:inherit;cursor:pointer;margin-top:12px}
+.btn.s{background:transparent;color:var(--bad);border:1px solid var(--bd);padding:3px 10px;margin:0}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.gold{color:var(--gold);font-weight:700}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+.note{font-size:.85rem;color:var(--mut)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.kpi{background:var(--card);border:1px solid var(--bd);border-top:3px solid var(--pri);border-radius:12px;padding:12px;text-align:center}
+.kpi b{display:block;font-size:1.8rem;color:var(--navy)}
+.kpi span{color:var(--mut);font-size:.85rem}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:.9rem}
+.bar i{display:block;height:14px;border-radius:7px;background:var(--pri);min-width:3px}
+.bar em{width:150px;font-style:normal;flex:none}
+.ubar{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--card);border-bottom:1px solid var(--bd);font-size:.9rem}.ubar button{border:1px solid var(--bd);background:transparent;color:var(--tx);border-radius:8px;padding:4px 10px;font:inherit;cursor:pointer}.auth{max-width:380px;margin:20px auto;padding:0 14px}
+#pr{display:none}
+@media print{body>*{display:none!important}body>#pr{display:block!important;color:#000;background:#fff;padding:10px}}
+html{font-size:13pt}
+body{font-family:"Sakkal Majalla","Traditional Arabic",Tahoma,Arial,sans-serif;font-size:1rem}
+button,input,select,textarea{font-family:inherit}
+nav button,.note,th,td,label,.tile span,.kpi span,.bar,.ubar,.ubar button,.tag,.crit,.btn,input,select,textarea,.k,.k i{font-size:1rem}
+</style>
+<script src="firebase-config.js"></script>
+<script src="seed.js"></script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import * as A from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import * as S from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+try{const app=initializeApp(window.FIREBASE_CONFIG);window.FB=Object.assign({},A,S,{initializeApp,app,auth:A.getAuth(app),db:S.getFirestore(app)})}catch(e){window.FBERR=e}
+window.dispatchEvent(new Event("fbready"));
+</script>
+</head>
+<body>
+<header><img alt="شعار عزيزا" src="data:image/png;base64,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"><div><h1>نظام التميز الوظيفي</h1><p>شركة دواجن فلسطين – عزيزا · برنامج تحفيز الموظفين</p></div></header>
+<div id="auth"></div><div id="ubar" class="ubar" style="display:none"></div><nav id="nav" style="display:none"></nav>
+<main id="main" style="display:none"></main>
+<div id="pr"></div>
+<script>
+const AW=[
+{id:"month",name:"موظف الشهر",freq:"شهري",m:[1,2,3,4,5,6,7,8,9,10,11,12],who:"موظف واحد",
+ desc:"يتم كل شهر اختيار أفضل موظف، ويكون التقييم على أساس النموذج المرفق.",
+ scored:true,
+ 
+ inc:["مكافأة مادية 500 شيقل","شهادة تقدير","إضافة اسمه وصورته على لوحة الشرف في مدخل الشركة"]},
+{scored:true,id:"dept",name:"نجم الدوائر",freq:"نصف سنوي",m:[6,12],who:"أفضل موظف في الدوائر المختلفة",
+ desc:"يتم اختيار أفضل موظف في الدوائر المختلفة بشكل نصف سنوي.",
+ info:["الدقة في العمل وعدم وجود أي أخطاء في مهام العمل الإدارية","الالتزام بمواعيد العمل من حيث الحضور والانصراف وأوقات الاستراحات","تقبل تعليمات العمل والسعي للتطور وتقديم مقترحات لتطوير العمل المطلوب منه","المبادرات والاقتراحات البناءة لتطوير الشركة","عدم حصول الموظف على أي إجراء إداري خلال عام من فترة التقييم"],
+ inc:["مكافأة مادية 500 شيقل","شهادة تقدير","نقل تجربته الناجحة في العمل لبقية الموظفين","إضافة تقرير عنه على الموقع الإلكتروني للشركة أو على لوحة الشرف"]},
+{scored:true,id:"ops",name:"نجوم العمليات",freq:"ربع سنوي",m:[3,6,9,12],who:"أفضل 3 موظفين (إنتاج، مستودعات، صيانة)",
+ desc:"يتم اختيار أفضل 3 موظفين في العمليات بشكل ربع سنوي.",
+ info:["الدقة في العمل المطلوب منه من طرف المشرف المباشر وعدم وجود أي أخطاء في مهام العمل","الالتزام بمواعيد العمل من حيث الحضور والانصراف وأوقات الاستراحات","الالتزام بتعليمات السلامة والأمان الشخصية وارتداء ملابس السلامة المهنية","التعاون في أوقات ضغط العمل","عدم حصول الموظف على أي إجراء إداري خلال عام من فترة التقييم"],
+ inc:["مكافأة مادية 500 شيقل لكل موظف","شهادة تقدير","إضافة تقرير عنهم على الموقع الإلكتروني للشركة أو على لوحة الشرف"]},
+{scored:true,conv:73,id:"trk",name:"نجوم سيارات نقل الريش",freq:"شهري",m:[1,2,3,4,5,6,7,8,9,10,11,12],who:"أفضل فريق نقل ريش من سيارات الشركة في العمليات",
+ desc:"يتم اختيار أفضل فريق لنقل الريش من سيارات الشركة في العمليات بشكل شهري.",
+ info:["الدقة في العمل المطلوب منه من طرف المشرف المباشر وعدم وجود أي أخطاء في مهام العمل","الالتزام بالمواصفة المحددة (نوع الدجاج والوزن المحدد)",{t:"ألا تقل نسبة التحويل الكلية خلال الفترة عن 73%",num:73},"الالتزام بمواعيد التوريد","التعاون في أوقات ضغط العمل","عدم حصول الموظف على أي إجراء إداري خلال عام من فترة التقييم"],
+ inc:["مكافأة مادية 600 شيقل لكل سيارة","شهادة تقدير","إضافة تقرير عنهم على الموقع الإلكتروني للشركة أو على لوحة الشرف"]},
+{scored:true,id:"disc",name:"الموظف المنضبط",freq:"كل 3 شهور",m:[3,6,9,12],who:"موظف واحد",
+ desc:"هو الموظف الأكثر انضباطاً سواء من حيث أوقات الدوام أو التدريب، ويتم اختيار موظف واحد كل 3 شهور.",
+ info:["الالتزام بالدوام من حيث الحضور والانصراف","الالتزام بمكان العمل وعدم إضاعة وقت العمل","الالتزام بمواعيد الاستراحات","التزام الموظف في حضور الدورات التدريبية المحددة له","توجه الموظف في العمل","لم يحصل صاحبها على جائزة أخرى خلال نفس الشهر","لم يحصل على أي إجراء إداري أو خطأ خلال الشهر"],
+ inc:["مكافأة مادية 200 شيقل على شكل كوبونات شراء","شهادة تقدير للموظف","إضافة اسمه وصورته على لوحة الشرف"]}
+];
+const MN=["كانون الثاني","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين الأول","تشرين الثاني","كانون الأول"];
+function mtxt(a){return a.m.length===12?"كل شهر":"أشهر "+a.m.join(" + ")}
+function per(a){const n=new Date(),pk=n.getFullYear()*12+n.getMonth(),f=(y,m)=>String(m).padStart(2,"0")+"/"+y,py=Math.floor((pk-1)/12),pm=(pk-1)%12+1;
+ if(a.m.length===12)return `<input id="f_per" value="${f(py,pm)}" readonly>`;
+ return `<input id="f_per" value="${f(n.getFullYear(),n.getMonth()+1)}" readonly>`}
+const CR=["مدى التزام الموظف بأوقات الدوام والدقة في المواعيد","مستوى التغيب والمغادرات غير الضرورية","التزام الموظف بالعمل واحترامه لأنظمة وتعليمات العمل","مستوى المحافظة على الممتلكات العامة والأجهزة المستخدمة","مدى إلمام الموظف بوصفه الوظيفي وطبيعة العمل","مستوى تنظيم الموظف لعمله بحيث يتمكن زملاؤه من متابعة العمل من بعده في حال غيابه","لباقة الموظف وحسن تعامله مع زملائه","يعبر عن آرائه وأفكاره بوضوح","القدرة على العمل والانجاز ضمن المجموعة","يقبل بتحمل المسؤوليات وينجز المهام في الأوقات المحددة","يطبق مفاهيم وأساليب جديدة مرتبطة بعمله بشكل فعال","يتخذ القرار المناسب عند غياب التعليمات المفصلة","يظهر الاستعداد لتعليم الآخرين","يتأكد دائما من جودة واكتمال عمله","يتقن مهارات الاستماع و/أو التحدث و/أو الكتابة","يقدم أفكار جديدة ترفع من مستوى العمل","يستفيد من الملاحظات لتحسين مستوى الأداء"];
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+const tabs=[["home","الرئيسية"],...AW.map(a=>[a.id,a.name]),["inbox","الواردة"],["results","النتائج"],["honor","لوحة الشرف"],["log","السجل"],["tools","التقارير"],["acc","الحسابات"]];
+let cur="home";
+function go(t){cur=t;nav.innerHTML=tabs.map(([k,n])=>`<button class="${k===t?"on":""}" onclick="go('${k}')">${n}${k==="inbox"&&inbox.length?" ("+inbox.length+")":""}</button>`).join("");
+ main.innerHTML=t==="home"?home():t==="inbox"?inboxV():t==="acc"?accV():t==="results"?resultsV():t==="honor"?honorV():t==="tools"?toolsV():t==="log"?log():awardS(AW.find(a=>a.id===t));if(t==="trk"){const c=main.querySelectorAll(".card");c[c.length-1].remove()}window.scrollTo(0,0)}
+function home(){const n=new Date(),cm=n.getMonth()+1,cp=MN[cm-1]+" "+n.getFullYear(),f=x=>String(Math.round(x*10)/10);
+ const cnt=a=>recs.filter(r=>r.aw===a.name).length,mx=Math.max(1,...AW.map(cnt)),due=a=>a.m.includes(cm);
+ const all=recs.filter(r=>r.sc),top=[...all].sort((x,y)=>y.met-x.met).slice(0,5),avg=all.length?all.reduce((s,r)=>s+r.met,0)/all.length:0;
+ const nxt=a=>{const m=a.m.find(x=>x>cm);return m?MN[m-1]+" "+n.getFullYear():MN[a.m[0]-1]+" "+(n.getFullYear()+1)};
+ const res=r=>r.sc?r.met+"/100":r.met+"/"+r.tot;
+ return INTRO+`<div class="kpis"><div class="kpi"><b>${recs.length}</b><span>إجمالي التقييمات</span></div><div class="kpi"><b>${inbox.length}</b><span>بانتظار تصويت اللجنة</span></div><div class="kpi"><b>${new Set(WON.flatMap(w=>w.winners.map(y=>y.name))).size}</b><span>موظف مكرَّم</span></div><div class="kpi"><b>${AW.filter(due).length}</b><span>جوائز مستحقة هذا الشهر</span></div><div class="kpi"><b>${all.length?f(avg):"-"}</b><span>متوسط نتائج موظف الشهر (من 100)</span></div></div>
+ ${winnersCard()}<div class="card"><h3>جدول الاستحقاق</h3>${AW.map(a=>`<div class="crit" style="align-items:center"><div style="flex:1"><b>${a.name}</b><br><span class="note">${a.freq} · ${mtxt(a)}</span></div><span class="${due(a)?"ok":"note"}">${due(a)?"مستحق هذا الشهر":"القادم: "+nxt(a)}</span><button class="btn s" style="color:var(--pri)" onclick="go('${a.id}')">فتح</button></div>`).join("")}</div>
+ <div class="card"><h3>عدد التقييمات حسب الجائزة</h3>${AW.map(a=>`<div class="bar"><em>${a.name}</em><i style="width:${cnt(a)/mx*55}%"></i><b>${cnt(a)}</b></div>`).join("")}</div>
+ <div class="card"><h3>أعلى نتائج موظف الشهر</h3>${top.length?`<div class="wrap"><table><tr><th>#</th><th>الاسم</th><th>القسم</th><th>الفترة</th><th>النتيجة</th></tr>${top.map((r,i)=>`<tr><td>${i+1}</td><td>${r.name}</td><td>${r.dep}</td><td>${r.per}</td><td class="ok">${res(r)}</td></tr>`).join("")}</table></div>`:'<p class="note">لا توجد بيانات بعد.</p>'}</div>
+ <div class="card"><h3>آخر التقييمات</h3>${recs.length?`<div class="wrap"><table><tr><th>التاريخ</th><th>الجائزة</th><th>الاسم</th><th>الفترة</th><th>النتيجة</th></tr>${recs.slice(0,5).map(r=>`<tr><td>${r.d}</td><td>${r.aw}</td><td>${r.name}</td><td>${r.per}</td><td>${res(r)}</td></tr>`).join("")}</table></div>`:'<p class="note">لا توجد تقييمات محفوظة بعد.</p>'}</div>`+homeOld()}
+function homeOld(){return `<h3 style="margin:16px 4px 8px;color:var(--pri)">تفاصيل الجوائز (المعايير والحوافز)</h3>
+<div class="grid">${AW.map(a=>`<button class="tile" onclick="go('${a.id}')"><b>${a.name}</b><span>${a.freq} · ${mtxt(a)} · ${a.who}</span></button>`).join("")}
+</div>`}
+function awardS(a){
+ return `<div class="card"><h2>${a.name}</h2><span class="tag">${a.freq}</span><span class="tag">${mtxt(a)}</span><span class="tag">${a.who}</span><p>${a.desc}</p>
+ <h3>الحوافز</h3><ul>${a.inc.map(i=>`<li>${i}</li>`).join("")}</ul>${a.info?`<h3>الشروط (للعلم)</h3><ul>${a.info.map(c=>`<li>${typeof c==="string"?c:c.t}</li>`).join("")}</ul>`:""}</div>
+ <div class="card"><h3>الهدف</h3><p>وضع آلية واضحة وشفافة يتم من خلالها اختيار الموظف المثالي في كل دائرة / قسم في الشركة، وخلق فريق عمل متعاون ومتحد، وتحفيز الموظفين إلى تكوين بيئة عمل احترافية.</p>
+ <h3>آلية الاختيار</h3><ul><li>يرشح كل مدير دائرة أو رئيس قسم اثنين من الموظفين.</li><li>يتم بعدها وضع الموظفين على قائمة التصويت من قبل لجنة التقييم (المدير العام والمدير الإداري) ليتم ترشيح موظف واحد.</li><li>يتم احتساب تقييم مدير الدائرة / رئيس القسم من 85 نقطة، وتصويت اللجنة على 15 نقطة، بحيث يحتسب المعدل، وبعد ذلك يتم احتساب النتيجة النهائية للموظفين.</li></ul></div>
+ <div class="card"><h3>نموذج التقييم (التقييم من 1 - 5)</h3>
+ <label>اسم الموظف</label>${nameF()}
+ <label>القسم / الدائرة</label>${depF()}
+ <label>فترة التقييم (${mtxt(a)})</label>${per(a)}
+ <label>اسم المقيّم (مدير الدائرة / رئيس القسم)</label><input id="f_ev">
+ ${a.conv?`<div class="crit" style="align-items:center"><div style="flex:1">1. تحديد نسبة التحويل الكلية خلال الفترة (%)<br><span class="note">الحد الأدنى ${a.conv}% – تُسجَّل ولا تدخل في مجموع الـ 85</span></div><div style="width:110px"><input type="number" id="conv" step="0.01" min="0" oninput="calcS()"><span id="convst" class="note"></span></div></div>`:""}${CR.map((c,i)=>`<div class="crit"><div style="flex:1">${i+1+(a.conv?1:0)}. ${c}</div><select id="s${i}" style="width:80px" onchange="calcS()"><option value="">-</option>${[1,2,3,4,5].map(n=>`<option>${n}</option>`).join("")}</select></div>`).join("")}
+ <p><b>المجموع من 85:</b> <span id="t85">0</span></p>
+ <h3>تصويت اللجنة (من 15)</h3>
+ <label>المدير العام</label><input type="number" id="v1" min="0" max="15" step="0.5" oninput="calcS()">
+ <label>المدير الإداري</label><input type="number" id="v2" min="0" max="15" step="0.5" oninput="calcS()">
+ <p><b>معدل تصويت اللجنة من 15:</b> <span id="t15">0</span></p>
+ <p class="ok" style="font-size:1.1rem">المجموع النهائي من 100: <span id="t100">0</span></p>
+ <label>ملاحظات</label><textarea id="f_note" rows="2"></textarea>
+ <button class="btn" onclick="submitS('${a.id}')">حفظ التقييم</button><div id="msg"></div></div>`}
+function calcS(){const cv=document.getElementById("conv");if(cv){const e=document.getElementById("convst"),ok=cv.value!==""&&+cv.value>=73;e.textContent=cv.value===""?"":ok?"✔ مستوفٍ":"✘ أقل من 73%";e.className=ok?"ok":"bad"}let s=0;CR.forEach((c,i)=>{s+=+document.getElementById("s"+i).value||0});
+ const g=k=>Math.min(15,Math.max(0,+document.getElementById(k).value||0)),c=(g("v1")+g("v2"))/2,f=n=>String(Math.round(n*10)/10);
+ document.getElementById("t85").textContent=s;document.getElementById("t15").textContent=f(c);document.getElementById("t100").textContent=f(s+c);return[s,c]}
+async function submitS(id){const a=AW.find(x=>x.id===id),v=k=>document.getElementById(k).value.trim(),m=document.getElementById("msg");
+ if(!v("f_name")){m.innerHTML='<p class="bad">الرجاء اختيار اسم الموظف</p>';return}
+ if(a.conv&&document.getElementById("conv").value===""){m.innerHTML='<p class="bad">الرجاء إدخال نسبة التحويل</p>';return}
+ if(CR.some((c,i)=>!document.getElementById("s"+i).value)){m.innerHTML='<p class="bad">الرجاء تعبئة جميع البنود (من 1 إلى 5)</p>';return}
+ const [s,c]=calcS(),t=Math.round((s+c)*10)/10,per=v("f_per"),emp=v("f_name"),g=k=>Math.min(15,Math.max(0,+document.getElementById(k).value||0)),key=a.id+"_"+per.replace("/","-")+"_"+emp.replace(/\s+/g,"_");
+ try{await FB.setDoc(FB.doc(FB.db,"evaluations",key),{supervisorUid:FB.auth.currentUser.uid,supervisorName:v("f_ev")||"الإدارة",awardId:a.id,awardName:a.name,empName:emp,dep:v("f_dep"),period:per,scores:CR.map((x,i)=>+document.getElementById("s"+i).value),s85:s,conv:a.conv?+document.getElementById("conv").value:null,note:v("f_note"),status:"final",committee:{gm:g("v1"),am:g("v2"),avg:c},total:t,createdAt:FB.serverTimestamp(),finalizedAt:FB.serverTimestamp()});
+  m.innerHTML=`<p class="ok">✔ تم الحفظ – النتيجة النهائية ${t} من 100</p>`}catch(e){m.innerHTML='<p class="bad">تعذر الحفظ ('+(e.code||"")+')</p>'}}
+let LF={aw:"",q:""};
+function opts(vals,sel){return '<option value="">الكل</option>'+[...new Set(vals)].map(v=>`<option ${v===sel?"selected":""}>${v}</option>`).join("")}
+function log(){const L=recs.map((r,i)=>[r,i]).filter(([r])=>(!LF.aw||r.aw===LF.aw)&&(!LF.q||(r.name||"").includes(LF.q)));
+ return `<div class="card"><h3>السجل</h3><label>الجائزة</label><select onchange="LF.aw=this.value;go('log')">${opts(recs.map(r=>r.aw),LF.aw)}</select><label>بحث بالاسم</label><input value="${LF.q}" onchange="LF.q=this.value.trim();go('log')"></div>`+(L.length?`<div class="card wrap"><table><tr><th>التاريخ</th><th>الجائزة</th><th>الاسم</th><th>القسم</th><th>الفترة</th><th>المقيّم</th><th>النتيجة</th><th></th></tr>${L.map(([r,i])=>`<tr><td>${r.d}</td><td>${r.aw}</td><td>${r.name}</td><td>${r.dep||""}</td><td>${r.per}</td><td>${r.ev||""}</td><td>${r.met}/${r.tot}</td><td><button class="btn s" data-id="${esc(r.id)}" onclick="cancelEv(this)">إلغاء التقييم</button></td></tr>`).join("")}</table></div>`:'<div class="card"><p class="note">لا توجد نتائج.</p></div>')}
+let recs=[],inbox=[],ALL=[],unsub=null,IM=null,IMt=0,WON=[],unsub2=null;
+const $=k=>document.getElementById(k),esc=t=>String(t).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+function show(h){main.innerHTML=h;nav.querySelectorAll("button").forEach(b=>{if(b.textContent.indexOf("الواردة")===0)b.textContent="الواردة"+(inbox.length?" ("+inbox.length+")":"")})}
+function toRec(id,d){const f=d.status==="final";return{id,aw:d.awardName,name:d.empName,dep:d.dep,per:d.period,ev:d.supervisorName,s85:d.s85,committee:d.committee?d.committee.avg:undefined,met:f?d.total:d.s85,tot:f?100:85,conv:d.conv,note:d.note,sc:true,status:d.status,d:d.createdAt?d.createdAt.toDate().toLocaleDateString("ar"):"",ts:d.createdAt?d.createdAt.toMillis():Date.now()}}
+function inboxV(m){const mm=m||(Date.now()-IMt<8000?IM:null);
+ const rows=inbox.map(r=>`<tr><td>${r.name}</td><td>${r.aw}</td><td>${r.ev}</td><td>${r.per}</td><td>${r.met}/85</td><td><input type="number" class="va" min="0" max="15" step="0.5" style="width:80px"></td><td><input type="number" class="vb" min="0" max="15" step="0.5" style="width:80px"></td><td><button class="btn s" style="color:var(--pri)" data-id="${esc(r.id)}" onclick="approve(this)">اعتماد</button> <button class="btn s" data-id="${esc(r.id)}" onclick="cancelEv(this)">إلغاء</button></td></tr>`).join("");
+ return `${mm?`<div class="card"><p class="${mm[0]}">${mm[1]}</p></div>`:""}<div class="card"><h3>بانتظار تصويت اللجنة (${inbox.length})</h3><p class="note">تصل تقييمات المشرفين إلى هنا تلقائياً. أدخل تصويت المدير العام والمدير الإداري (من 15 لكل منهما) ثم اضغط «اعتماد».</p>${inbox.length?`<div class="wrap"><table><tr><th>الموظف</th><th>الجائزة</th><th>المسؤول</th><th>الفترة</th><th>تقييم المسؤول</th><th>المدير العام /15</th><th>المدير الإداري /15</th><th></th></tr>${rows}</table></div>`:'<p class="note">لا توجد تقييمات واردة.</p>'}</div>`}
+async function approve(b){const tr=b.closest("tr"),r=inbox.find(x=>x.id===b.dataset.id),A=tr.querySelector(".va").value,B=tr.querySelector(".vb").value,g=x=>Math.min(15,Math.max(0,+x||0));
+ if(!r)return;if(A===""||B===""){IM=["bad","الرجاء إدخال تصويت المدير العام والمدير الإداري"];IMt=Date.now();go("inbox");return}
+ const c=(g(A)+g(B))/2,t=Math.round((r.met+c)*10)/10;
+ try{await FB.updateDoc(FB.doc(FB.db,"evaluations",r.id),{status:"final",committee:{gm:g(A),am:g(B),avg:c},total:t,finalizedAt:FB.serverTimestamp()});IM=["ok","تم اعتماد تقييم "+r.name+"، النتيجة النهائية "+t+" من 100"]}catch(e){IM=["bad","تعذر الاعتماد ("+(e.code||"")+")"]}
+ IMt=Date.now();go("inbox")}
+const EMP=["محمد وائل محمد صبحي عابودي", "رائد حسني توفيق شحرور", "محمد عقاب محمود قعقورة"],DEP="وحدة المعالجة";
+function nameF(){return `<select id="f_name"><option value="">— اختر الموظف —</option>${EMP.map(n=>`<option>${n}</option>`).join("")}</select>`}
+function depF(){return `<input id="f_dep" value="${DEP}" readonly>`}
+const INTRO=`<div class="card"><h2>مرحباً بك في لوحة الإدارة</h2><p class="note" style="margin:0 0 8px">نظام التميز الوظيفي – شركة دواجن فلسطين</p><p>يهدف النظام إلى اختيار الموظفين المتميزين بآلية <b>واضحة وشفافة</b> تقوم على معايير محددة، وتحفيزهم باعتبارهم المورد الأهم ورأس المال الأكبر للشركة، وبناء بيئة عمل احترافية وفريق متعاون ومتحد.</p></div>
+<div class="card"><h3>كيف يعمل النظام؟</h3><ol style="padding-right:20px;margin:6px 0"><li>يدخل المشرفون إلى <b>بوابة المشرفين</b> ويقيّمون موظفيهم حسب الجائزة المفعّلة هذا الشهر (التقييم من 85 نقطة).</li><li>يصل تقييم كل مشرف إليك <b>تلقائياً</b> في تبويب <b>«الواردة»</b>.</li><li>أدخل تصويت اللجنة (المدير العام والمدير الإداري، من 15 لكل منهما) واضغط «اعتماد»، فيُحتسب المجموع النهائي من 100.</li><li>تظهر النتائج في تبويب «السجل» وفي لوحة المتابعة أدناه.</li></ol><p class="note" style="margin:8px 0 0">يمكنك أيضاً تقييم موظفي وحدة المعالجة مباشرة من هنا عبر تبويب الجائزة المطلوبة.</p></div>`;
+const WIN={month:1,dept:1,ops:3,trk:1,disc:1};
+let RF={aw:"",per:""},WS={aw:""};
+function groups(f){const g={};recs.filter(r=>r.tot===100&&(!f.aw||r.aw===f.aw)&&(!f.per||r.per===f.per)).forEach(r=>{const k=r.aw+"|"+r.per;(g[k]=g[k]||[]).push(r)});
+ return Object.keys(g).sort().map(k=>{const L=g[k].sort((x,y)=>y.met-x.met),a=AW.find(x=>x.name===L[0].aw);return{aw:L[0].aw,per:L[0].per,L,n:(a&&WIN[a.id])||1}})}
+function wkey(r){const a=AW.find(x=>x.name===r.aw);return (a?a.id:"x")+"_"+String(r.per).replace("/","-")}
+function isWin(r){const w=WON.find(x=>x.id===wkey(r));return !!(w&&w.winners.some(y=>y.id===r.id))}
+function rowsH(g,act){return g.L.map((r,i)=>{const w=isWin(r);return `<tr><td>${i+1}</td><td>${r.name}</td><td>${r.dep||""}</td><td>${r.s85??""}</td><td>${r.committee??""}</td><td><b>${r.met}</b></td><td class="${w?"ok":"note"}">${w?"فائز ✔":(i<g.n?"الأعلى نتيجة":"مرشح")}</td>${act?`<td><button class="btn s" style="${w?"":"color:var(--pri)"}" data-id="${esc(r.id)}" onclick="setWinner(this)">${w?"إلغاء الإعلان":"إعلان كفائز"}</button></td>`:""}</tr>`}).join("")}
+const TH=a=>'<tr><th>#</th><th>الموظف</th><th>القسم</th><th>المشرف /85</th><th>اللجنة /15</th><th>النتيجة /100</th><th>الحالة</th></tr>'.replace('</tr>',a?'<th>الإعلان</th></tr>':'</tr>');
+function resultsV(){const G=groups(RF);
+ return annCard()+`<div class="card"><h3>النتائج النهائية والفائزون</h3><label>الجائزة</label><select onchange="RF.aw=this.value;go('results')">${opts(recs.map(r=>r.aw),RF.aw)}</select><label>الفترة</label><select onchange="RF.per=this.value;go('results')">${opts(recs.map(r=>r.per),RF.per)}</select><button class="btn" onclick="printR()">طباعة التقرير</button> <button class="btn" onclick="dlReport()">تنزيل التقرير (HTML)</button></div>`+(G.length?G.map(g=>`<div class="card wrap"><h3>${g.aw} – ${g.per}</h3><table>${TH(true)}${rowsH(g,true)}</table></div>`).join(""):'<div class="card"><p class="note">لا توجد نتائج معتمدة بعد.</p></div>')}
+function reportHTML(){const G=groups(RF),logo=document.querySelector("header img").src;
+ return `<div style="font-family:'Sakkal Majalla',Tahoma,Arial,sans-serif;font-size:13pt;direction:rtl"><div style="display:flex;align-items:center;gap:12px;border-bottom:3px solid #0f7a3a;padding-bottom:8px"><img src="${logo}" style="width:64px;height:64px"><div><h2 style="margin:0">تقرير نتائج نظام التميز الوظيفي</h2><div>شركة دواجن فلسطين – تاريخ الطباعة: ${new Date().toLocaleDateString("ar")}</div></div></div>`+G.map(g=>`<h3>${g.aw} – ${g.per}</h3><table style="width:100%;border-collapse:collapse;font-size:13pt" border="1" cellpadding="5">${TH(false)}${rowsH(g,false)}</table>`).join("")+`<div style="display:flex;justify-content:space-around;margin-top:70px"><div>المدير العام: ..........................</div><div>المدير الإداري: ..........................</div></div></div>`}
+function printR(){printHTML(reportHTML(),false)}
+async function saveFile(name,data){let d=null;try{if(typeof claude!=="undefined")d=await claude.use("downloads")}catch(e){}
+ if(d){try{await d.save({filename:name,data});return}catch(e){if(e&&e.code==="declined")return}}
+ const u=URL.createObjectURL(new Blob([data])),a=document.createElement("a");a.href=u;a.download=name;a.click()}
+function dlReport(){saveFile("Excellence_Report.html","<!doctype html><meta charset=utf-8><body onload='print()'>"+reportHTML())}
+function toolsV(){return `<div class="card"><h3>تقرير Excel</h3><p class="note">ملف CSV يفتح مباشرة في Excel ويحتوي كل التقييمات المعتمدة.</p><button class="btn" onclick="csvAll()">تنزيل التقرير</button></div>
+<div class="card"><h3>نسخة احتياطية</h3><p class="note">بياناتك محفوظة في Firebase. يمكنك تنزيل نسخة JSON من كل التقييمات (المعتمدة والمنتظرة).</p><button class="btn" onclick="exportJSON()">تنزيل نسخة JSON</button></div>
+<div class="card" style="border-top-color:var(--bad)"><h3>تصفير بيانات التجربة</h3><p class="note">يحذف كل التقييمات والفائزين وأرشيف الإلغاء نهائياً ليبدأ النظام فارغاً قبل التشغيل الفعلي. الحسابات وقوائم الموظفين لا تتأثر.</p><button class="btn" style="background:var(--bad)" onclick="wipeData()">تصفير كل التقييمات</button></div>`}
+function csvAll(){const hd=["التاريخ","الجائزة","الفترة","الموظف","القسم","المشرف","تقييم المشرف /85","تصويت اللجنة /15","النتيجة /100","نسبة التحويل"],q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+ const rows=recs.filter(r=>r.tot===100).map(r=>[r.d,r.aw,r.per,r.name,r.dep,r.ev,r.s85,r.committee,r.met,r.conv].map(q).join(","));
+ saveFile("Excellence_Results.csv","\ufeff"+[hd.map(q).join(","),...rows].join("\r\n"))}
+function exportJSON(){saveFile("Excellence_Backup.json",JSON.stringify(ALL.map(r=>Object.assign({},r)),null,1))}
+const AEMAIL="admin@exc.aziza";
+function showAuth(h){$("auth").className="auth";$("auth").innerHTML=h;$("nav").style.display="none";$("main").style.display="none";$("ubar").style.display="none"}
+function authView(m){showAuth(`<div class="card"><h2>تسجيل دخول الإدارة</h2>${m?`<p class="bad">${m}</p>`:""}<label>كلمة السر</label><input id="ap" type="password" onkeydown="if(event.key==='Enter')doAuth()"><button class="btn" onclick="doAuth()">دخول</button></div>`)}
+function authMsg(e){const c=e&&e.code||"";
+ if(["auth/invalid-credential","auth/wrong-password","auth/user-not-found","auth/invalid-login-credentials"].includes(c))return "البريد أو كلمة السر غير صحيحة (تأكد من لغة لوحة المفاتيح، ومن وجود المستخدم في Firebase)";
+ if(c==="auth/operation-not-allowed")return "تسجيل الدخول بالبريد وكلمة السر غير مفعّل في Firebase (Authentication ← Sign-in method)";
+ if(c==="auth/invalid-api-key"||c==="auth/api-key-not-valid.-please-pass-a-valid-api-key.")return "مفتاح apiKey في firebase-config.js غير صحيح";
+ if(c==="auth/network-request-failed")return "تعذر الاتصال بالإنترنت";
+ if(c==="auth/too-many-requests")return "محاولات كثيرة، انتظر قليلاً ثم أعد المحاولة";
+ return "تعذر تسجيل الدخول ("+(c||e)+")"}
+async function doAuth(){try{await FB.signInWithEmailAndPassword(FB.auth,AEMAIL,$("ap").value)}catch(e){authView(authMsg(e))}}
+function startAdmin(){$("auth").innerHTML="";$("auth").className="";$("ubar").style.display="flex";$("ubar").innerHTML='<span>لوحة الإدارة</span><span><button onclick="pwChange()">تغيير كلمة السر</button> <button onclick="logoutA()">خروج</button></span>';
+ if(unsub)unsub();
+ unsub=FB.onSnapshot(FB.collection(FB.db,"evaluations"),sn=>{ALL=sn.docs.map(d=>toRec(d.id,d.data())).sort((a,b)=>b.ts-a.ts);recs=ALL.filter(r=>r.status==="final");inbox=ALL.filter(r=>r.status!=="final");
+  if(cur==="inbox"){if([...main.querySelectorAll("input[type=number]")].every(i=>i.value===""))go("inbox");else show(main.innerHTML)}else if(["home","results","log"].includes(cur))go(cur);else show(main.innerHTML)},()=>{});
+ if(unsub2)unsub2();unsub2=FB.onSnapshot(FB.collection(FB.db,"winners"),sn=>{WON=sn.docs.map(d=>Object.assign({id:d.id,ts:d.data().announcedAt?d.data().announcedAt.toMillis():Date.now()},d.data()));if(["home","results","honor"].includes(cur))go(cur)},()=>{});
+ $("nav").style.display="flex";$("main").style.display="block";go("home")}
+async function logoutA(){if(unsub)unsub();unsub=null;if(unsub2)unsub2();unsub2=null;await FB.signOut(FB.auth);location.replace("index.html")}
+function pwChange(){showAuth(`<div class="card"><h2>تغيير كلمة السر</h2><label>الحالية</label><input id="p0" type="password"><label>الجديدة</label><input id="p1" type="password"><label>تأكيد الجديدة</label><input id="p2" type="password"><button class="btn" onclick="savePw()">حفظ</button> <button class="btn s" style="color:var(--tx)" onclick="startAdmin()">إلغاء</button><div id="pm"></div></div>`)}
+async function savePw(){const m=$("pm"),p1=$("p1").value,u=FB.auth.currentUser;
+ try{await FB.reauthenticateWithCredential(u,FB.EmailAuthProvider.credential(u.email,$("p0").value))}catch(e){m.innerHTML='<p class="bad">كلمة السر الحالية غير صحيحة</p>';return}
+ if(p1.length<6||p1!==$("p2").value){m.innerHTML='<p class="bad">كلمة السر الجديدة غير مطابقة أو أقل من 6 أحرف</p>';return}
+ try{await FB.updatePassword(u,p1)}catch(e){m.innerHTML='<p class="bad">تعذر التغيير ('+(e.code||"")+')</p>';return}startAdmin()}
+function accV(){setTimeout(loadAcc,0);const S=window.SEED;
+ return `<div class="card"><h3>حسابات المشرفين</h3><p class="note">إذا نسي المشرف كلمة السر اضغط «إعادة تعيين»: يُنشأ له حساب جديد بكلمة السر المبدئية <b>Aziza@123</b> مع تغيير إجباري عند أول دخول، وتبقى تقييماته مرتبطة به.</p><div id="acclist" class="wrap">جارٍ التحميل...</div></div>`+(S?seedCard(S):"")}
+function seedCard(S){return `<div class="card"><h3>إنشاء / تحديث الحسابات</h3><p class="note">ينشئ حساباً لكل مشرف غير موجود (كلمة السر المبدئية <b>Aziza@123</b>)، ويحدّث قوائم الموظفين والصلاحيات للحسابات الموجودة.</p><button class="btn" onclick="seedAcc()">إنشاء / تحديث الحسابات</button><div id="acclog" style="margin-top:10px"></div></div>`}
+async function loadAcc(){const L=$("acclist");if(!L)return;
+ try{const q=await FB.getDocs(FB.collection(FB.db,"users")),rows=q.docs.map(d=>d.data()).filter(u=>u.role==="supervisor").sort((a,b)=>a.username.localeCompare(b.username));
+  L.innerHTML=rows.length?`<table><tr><th>المستخدم</th><th>الاسم</th><th>الموظفون</th><th>الحالة</th><th></th></tr>${rows.map(u=>`<tr><td>${u.username}</td><td>${u.name}</td><td>${(u.emp||[]).length}</td><td class="${u.mustChange?"bad":"ok"}">${u.mustChange?"لم يغيّر كلمة السر":"فعّال"}</td><td><button class="btn s" data-u="${esc(u.username)}" onclick="resetAcc(this)">إعادة تعيين</button></td></tr>`).join("")}</table>`:'<p class="note">لا توجد حسابات بعد.</p>'}
+ catch(e){L.textContent="تعذر تحميل الحسابات ("+(e.code||"")+")"}}
+async function resetAcc(b){const un=b.dataset.u;
+ if(!confirm("إعادة تعيين حساب "+un+"؟\nسيحصل على كلمة السر المبدئية Aziza@123 وتغيير إجباري عند أول دخول."))return;
+ b.disabled=true;
+ try{const lc=un.toLowerCase(),q=await FB.getDocs(FB.query(FB.collection(FB.db,"users"),FB.where("username","==",un)));
+  if(q.empty)throw{message:"الحساب غير موجود"};
+  const old=q.docs[0],prof=old.data(),dd=await FB.getDoc(FB.doc(FB.db,"directory",lc)),ver=((dd.exists()&&dd.data().ver)||0)+1,email=lc+"."+ver+"@exc.aziza";
+  const sa=FB.getAuth(FB.initializeApp(window.FIREBASE_CONFIG,"rs"+Date.now()));
+  const c=await FB.createUserWithEmailAndPassword(sa,email,"Aziza@123");
+  await FB.setDoc(FB.doc(FB.db,"users",c.user.uid),Object.assign({},prof,{mustChange:true}));
+  const ev=await FB.getDocs(FB.query(FB.collection(FB.db,"evaluations"),FB.where("supervisorUid","==",old.id)));
+  for(const d of ev.docs)await FB.updateDoc(d.ref,{supervisorUid:c.user.uid});
+  await FB.setDoc(FB.doc(FB.db,"directory",lc),{email,ver});
+  await FB.deleteDoc(old.ref);
+  toast("تمت إعادة تعيين "+un+" (كلمة السر المبدئية Aziza@123)");loadAcc()}
+ catch(e){toast("تعذر الإعادة ("+(e.code||e.message)+")",true);b.disabled=false}}
+async function seedAcc(){const L=$("acclog"),out=[];L.textContent="جارٍ التنفيذ...";
+ const sa=FB.getAuth(FB.initializeApp(window.FIREBASE_CONFIG,"sec"+Date.now()));
+ for(const u of window.SEED){const prof={username:u.username,name:u.name,dep:u.dep||"",emp:u.emp,only:u.only||[],except:u.except||[],role:"supervisor"};
+  try{const q=await FB.getDocs(FB.query(FB.collection(FB.db,"users"),FB.where("username","==",u.username)));
+   if(!q.empty){await FB.updateDoc(q.docs[0].ref,prof);out.push(u.username+": تم تحديث البيانات")}
+   else{const c=await FB.createUserWithEmailAndPassword(sa,u.username.toLowerCase()+"@exc.aziza","Aziza@123");await FB.setDoc(FB.doc(FB.db,"users",c.user.uid),Object.assign({mustChange:true},prof));await FB.setDoc(FB.doc(FB.db,"directory",u.username.toLowerCase()),{email:u.username.toLowerCase()+"@exc.aziza",ver:0});await FB.signOut(sa);out.push(u.username+": تم إنشاء الحساب")}}
+  catch(e){out.push(u.username+": خطأ ("+(e.code||e.message)+")")}}
+ L.innerHTML=out.map(x=>"<div>"+x+"</div>").join("")}
+async function setWinner(b){const r=recs.find(x=>x.id===b.dataset.id);if(!r)return;
+ const a=AW.find(x=>x.name===r.aw),n=(a&&WIN[a.id])||1,key=wkey(r),c0=WON.find(x=>x.id===key),list=c0?c0.winners.slice():[],i=list.findIndex(y=>y.id===r.id);
+ if(i>-1)list.splice(i,1);else{if(n===1)list.length=0;else if(list.length>=n){toast("الحد الأقصى للفائزين في هذه الجائزة "+n,true);return}list.push({id:r.id,name:r.name,dep:r.dep||"",total:r.met,photo:PH})}
+ try{await writeWin(key,a?a.id:"",r.aw,r.per,list);toast(i>-1?"تم إلغاء الإعلان":"تم إعلان "+r.name+" فائزاً")}catch(e){toast("تعذر الحفظ ("+(e.code||"")+")",true)}}
+function winnersCard(){const M={};
+ WON.forEach(w=>w.winners.forEach(y=>{(M[y.name]=M[y.name]||{name:y.name,L:[]}).L.push({aw:w.awardName,per:w.period,ts:w.ts})}));
+ const R=Object.values(M).map(e=>{e.L.sort((a,b)=>b.ts-a.ts);return e}).sort((a,b)=>b.L.length-a.L.length||b.L[0].ts-a.L[0].ts);
+ return `<div class="card"><h3>الموظفون المكرَّمون (${R.length})</h3>${R.length?`<div class="wrap"><table><tr><th>الموظف</th><th>عدد مرات التكريم</th><th>الجوائز</th></tr>${R.map(e=>`<tr><td><b>${e.name}</b></td><td>${e.L.length}</td><td style="white-space:normal">${e.L.map(x=>x.aw+" – "+x.per).join("<br>")}</td></tr>`).join("")}</table></div>`:'<p class="note">لم يتم تكريم أي موظف بعد. من تبويب «النتائج» أعلن الفائز.</p>'}</div>`}
+function curPer(a){const n=new Date(),pk=n.getFullYear()*12+n.getMonth(),f=(y,m)=>String(m).padStart(2,"0")+"/"+y;
+ if(a.m.length===12)return f(Math.floor((pk-1)/12),(pk-1)%12+1);return f(n.getFullYear(),n.getMonth()+1)}
+function annCard(){const cm=new Date().getMonth()+1,act=AW.filter(a=>a.m.includes(cm));
+ if(!act.length)return '<div class="card"><p class="note">لا توجد جوائز مفعّلة هذا الشهر.</p></div>';
+ const a=act.find(x=>x.id===WS.aw)||act[0],per=curPer(a),cand=recs.filter(r=>r.aw===a.name&&r.per===per).sort((x,y)=>y.met-x.met),w=WON.find(x=>x.id===a.id+"_"+per.replace("/","-"));
+ return `<div class="card"><h3>إعلان فائز</h3><label>الجائزة (المفعّلة هذا الشهر)</label><select onchange="WS.aw=this.value;go('results')">${act.map(x=>`<option value="${x.id}" ${x.id===a.id?"selected":""}>${x.name}</option>`).join("")}</select><p class="note">فترة التقييم: <b>${per}</b></p>${cand.length?`<label>اختر الفائز من المرشحين</label><select id="wsel">${cand.map(r=>`<option value="${esc(r.id)}">${r.name} – ${r.met}/100</option>`).join("")}</select><label>صورة الفائز (اختياري)</label><input type="file" id="wphoto" accept="image/*"><button class="btn" onclick="announce()">إعلان كفائز</button>`:'<p class="bad">لا يوجد مرشحون معتمدون لهذه الجائزة في هذه الفترة. اعتمد التقييمات من تبويب «الواردة» أولاً.</p>'}${w?`<p class="ok">الفائز المعلن حالياً: ${w.winners.map(y=>y.name).join("، ")}</p>`:""}</div>`}
+async function announce(){const id=document.getElementById("wsel").value,r=recs.find(x=>x.id===id);if(!r)return;if(isWin(r)){toast("هذا الموظف معلن فائزاً مسبقاً",true);return}
+ const f=document.getElementById("wphoto").files[0];try{PH=f?await resizePhoto(f):""}catch(e){PH=""}
+ setWinner({dataset:{id}});PH=""}
+let PH="";
+function resizePhoto(f){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=360,k=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",0.8))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(f)})}
+async function writeWin(key,aid,aw,per,list){if(list.length){const ts=FB.serverTimestamp();await FB.setDoc(FB.doc(FB.db,"winners",key),{awardId:aid,awardName:aw,period:per,winners:list,announcedAt:ts});await FB.setDoc(FB.doc(FB.db,"honor",key),{awardName:aw,period:per,winners:list.map(y=>({id:y.id,name:y.name,dep:y.dep,photo:y.photo||""})),announcedAt:ts})}else{await FB.deleteDoc(FB.doc(FB.db,"winners",key));await FB.deleteDoc(FB.doc(FB.db,"honor",key))}}
+async function setPhoto(inp,key,i){const f=inp.files[0];if(!f)return;const w=WON.find(x=>x.id===key);if(!w)return;
+ try{const p=await resizePhoto(f),list=w.winners.map((y,j)=>j===i?Object.assign({},y,{photo:p}):y);
+  await FB.updateDoc(FB.doc(FB.db,"winners",key),{winners:list});
+  await FB.updateDoc(FB.doc(FB.db,"honor",key),{winners:list.map(y=>({id:y.id,name:y.name,dep:y.dep,photo:y.photo||""}))});toast("تم حفظ الصورة")}catch(e){toast("تعذر حفظ الصورة ("+(e.code||"")+")",true)}}
+function honorV(){const L=[...WON].sort((x,y)=>y.ts-x.ts);
+ return `<div class="card"><h3>لوحة الشرف</h3><p class="note">صفحة العرض العامة لشاشة المدخل وللموقع، وتتحدّث تلقائياً عند كل إعلان فائز. يمكنك إضافة صورة لكل فائز من الجدول.</p><a class="btn" style="display:inline-block;text-decoration:none" href="honor.html" target="_blank">فتح لوحة الشرف</a></div><div class="card wrap">${L.length?`<table><tr><th>الصورة</th><th>الفائز</th><th>الجائزة</th><th>الفترة</th><th></th></tr>${L.map(w=>w.winners.map((y,i)=>`<tr><td>${y.photo?`<img src="${y.photo}" style="width:48px;height:48px;border-radius:50%;object-fit:cover">`:"—"}</td><td><b>${y.name}</b></td><td>${w.awardName}</td><td>${w.period}</td><td><label class="btn s" style="color:var(--pri);cursor:pointer">${y.photo?"تغيير الصورة":"إضافة صورة"}<input type="file" accept="image/*" hidden onchange="setPhoto(this,'${esc(w.id)}',${i})"></label></td></tr>`).join("")).join("")}</table>`:'<p class="note">لا يوجد فائزون معلنون بعد. أعلن فائزاً من تبويب «النتائج».</p>'}</div>`}
+function printHTML(h,land){const st=document.createElement("style");st.id="pgst";st.textContent="@page{size:A4 "+(land?"landscape":"portrait")+";margin:10mm}";document.head.appendChild(st);$("pr").innerHTML=h;try{window.print()}catch(e){}setTimeout(()=>st.remove(),1500)}
+async function wipeData(){
+ const t=prompt("تحذير: سيتم حذف كل التقييمات والفائزين وأرشيف الإلغاء نهائياً (الحسابات وقوائم الموظفين تبقى).\nيُنصح بأخذ نسخة JSON قبل ذلك.\nاكتب كلمة: تصفير  للتأكيد");
+ if(t!=="تصفير")return;
+ try{let n=0;for(const c of ["evaluations","winners","honor","cancelled"]){const q=await FB.getDocs(FB.collection(FB.db,c));for(const d of q.docs){await FB.deleteDoc(d.ref);n++}}
+  toast("تم حذف "+n+" سجل، والنظام فارغ الآن")}catch(e){toast("تعذر الحذف ("+(e.code||"")+")",true)}}
+function toast(t,bad){const d=document.createElement("div");d.textContent=t;d.style.cssText="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99;padding:10px 18px;border-radius:10px;color:#fff;font-size:14px;background:"+(bad?"#c0392b":"#0f7a3a");document.body.appendChild(d);setTimeout(()=>d.remove(),4500)}
+async function cancelEv(b){const id=b.dataset.id,r=ALL.find(x=>x.id===id);if(!r)return;
+ const why=prompt("إلغاء تقييم «"+r.name+"» ("+r.aw+" – "+r.per+")\nسيتمكن المشرف من إعادة تقييمه.\nاكتب سبب الإلغاء (اختياري):");
+ if(why===null)return;
+ try{const sn=await FB.getDoc(FB.doc(FB.db,"evaluations",id));
+  await FB.setDoc(FB.doc(FB.db,"cancelled",id+"_"+Date.now()),Object.assign({},sn.data(),{cancelledAt:FB.serverTimestamp(),reason:why,cancelledBy:FB.auth.currentUser.email}));
+  if(isWin(r)&&recs.find(x=>x.id===id))await setWinner({dataset:{id}});await FB.deleteDoc(FB.doc(FB.db,"evaluations",id));toast("تم إلغاء تقييم "+r.name)}
+ catch(e){toast("تعذر الإلغاء ("+(e.code||"")+")",true)}}
+function boot(){
+ if(!window.FB)return showAuth('<div class="card"><p class="bad">تعذر الاتصال بـ Firebase. تأكد من ملف firebase-config.js ومن الاتصال بالإنترنت.</p></div>');
+ FB.onAuthStateChanged(FB.auth,u=>{if(u&&u.email===AEMAIL)startAdmin();else location.replace("index.html")})}
+if(window.FB||window.FBERR)boot();else window.addEventListener("fbready",boot);
+</script>
+</body>
+</html>
